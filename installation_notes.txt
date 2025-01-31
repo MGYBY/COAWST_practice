@@ -1,0 +1,154 @@
+sudo yum install gcc
+sudo yum install cpp gcc-c++
+sudo yum install unzip bzip2 time  perl tcsh wget m4 nfs-utils mlocate libX11-devel.x86_64 libXext-devel.x86_64 libXrender-devel.x86_64 fontconfig-devel.x86_64 curl-devel cmake subversion
+
+export DIR=/home/byy/Build_COAWST/LIBRARIES
+mkdir -p $DIR
+mkdir -p /home/byy/Build_COAWST/src
+
+
+ZLIB
+cd ./Build_COAWST/src/
+wget http://www.zlib.net/fossils/zlib-1.2.11.tar.gz
+# tar
+cd zlib-1.2.11/
+./configure --prefix=$DIR/zlib
+make -j2
+make install
+! in .bashrc:
+### Build_COAWST
+ulimit -s unlimited
+export MALLOC_CHECK_=0
+### zlib
+export LD_LIBRARY_PATH=/home/byy//Build_COAWST/LIBRARIES/zlib/lib:$LD_LIBRARY_PATH
+
+
+HDF5
+wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz
+cd hdf5-............
+./configure --prefix=$DIR/hdf5 --with-zlib=$DIR/zlib --enable-fortran
+make -j2
+make install
+! in .bashrc:
+### hdf5
+export PATH=/home/byy/Build_COAWST/LIBRARIES/hdf5/bin:$PATH
+export LD_LIBRARY_PATH=/home/byy/Build_COAWST/LIBRARIES/hdf5/lib:$LD_LIBRARY_PATH
+export HDF5_HOME=/home/byy/Build_COAWST/LIBRARIES/hdf5/
+export HDF5_INCDIR=$HDF5_HOME/include
+export HDF5_LIBDIR=$HDF5_HOME/lib
+
+
+NETCDF-C
+! in terminal
+export CC=gcc
+export CXX=g++
+export FC=gfortran
+export FCFLAGS='-m64'
+export F77=gfortran
+export FFLAGS='-m64'
+cd /home/byy/Build_COAWST/src
+wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.6.3.tar.gz
+! or try this
+wget https://github.com/Unidata/netcdf-c/archive/refs/tags/v4.6.3.zip
+cd netcdf-c-4.6.3/
+export CPPFLAGS="-I/home/byy/Build_COAWST/LIBRARIES/hdf5/include"
+export LDFLAGS="-L/home/byy/Build_COAWST/LIBRARIES/hdf5/lib"
+./configure --prefix=$DIR/netcdf  --enable-netcdf-4 --enable-netcdf4 --enable-shared --enable-dap
+make -j5
+make install
+! in .bashrc
+### netcdf
+export PATH=/home/byy/Build_COAWST/LIBRARIES/netcdf/bin:$PATH
+export LD_LIBRARY_PATH=/home/byy/Build_COAWST/LIBRARIES/netcdf/lib:$LD_LIBRARY_PATH
+export NETCDF=/home/byy/Build_COAWST/LIBRARIES/netcdf/
+export NETCDF_INC=$NETCDF/include
+export NETCDF_LIB=$NETCDF/lib
+export NETCDF_INCDIR=$NETCDF/include
+export NETCDF_LIBDIR=$NETCDF/lib
+export NETCDFPATH=$NETCDF
+
+
+NETCDF-FORTRAN
+cd /home/byy/Build_COAWST/src
+wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-fortran-4.4.5.tar.gz
+! or try this
+wget https://github.com/Unidata/netcdf-fortran/archive/refs/tags/v4.4.5.zip
+export CPPFLAGS="-I/home/byy/Build_COAWST/LIBRARIES/netcdf/include"
+export LDFLAGS="-L/home/byy/Build_COAWST/LIBRARIES/netcdf/lib"
+! mod Line 6316, 6323, 6324 of configure file
+```
+doit='$FC -c ${FCFLAGS} ${FCFLAGS_f90} -fallow-argument-mismatch conftest.f90'
+FCFLAGS="${FCFLAGS} -fallow-argument-mismatch"
+FFFLAGS="${FFFLAGS} -fallow-argument-mismatch"
+```
+./configure --prefix=$DIR/netcdf -DCMAKE_Fortran_FLAGS="-fallow-argument-mismatch"
+make -j4
+make install
+
+
+NETCDF-CXX4
+cd /home/byy/Build_COAWST/src
+wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.3.0.tar.gz
+! or try this
+wget https://github.com/Unidata/netcdf-cxx4/archive/refs/tags/v4.3.0.zip
+export CPPFLAGS="-I/home/byy/Build_COAWST/LIBRARIES/hdf5/include -I/home/byy/Build_COAWST/LIBRARIES/netcdf/include"
+export LDFLAGS="-L/home/byy/Build_COAWST/LIBRARIES/hdf5/lib -L/home/byy/Build_COAWST/LIBRARIES/netcdf/lib"
+./configure --prefix=$DIR/netcdf
+make -j4
+make install
+
+
+MPICH LIB
+cd /home/byy/Build_COAWST/src
+wget https://www.mpich.org/static/downloads/3.3/mpich-3.3.tar.gz
+cd mpich-3.3
+export  FFLAGS="-w -fallow-argument-mismatch -O2"
+./configure --prefix=$DIR/mpich
+make -j8
+make install
+! in .bashrc
+### mpich
+export PATH=/home/byy/Build_COAWST/LIBRARIES/mpich/bin:$PATH
+export LD_LIBRARY_PATH=/home/byy/Build_COAWST/LIBRARIES/mpich/lib:$LD_LIBRARY_PATH
+
+
+LIBPNG
+cd /home/byy/Build_COAWST/src
+wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz
+cd libpng
+./configure --prefix=$DIR/libpng
+make -j2
+make install
+! in .bashrc
+### libpng
+export LD_LIBRARY_PATH=/home/byy/Build_COAWST/LIBRARIES/libpng/lib:$LD_LIBRARY_PATH
+
+
+JASPER
+cd /home/byy/Build_COAWST/src
+wget https://www.ece.uvic.ca/~frodo/jasper/software/jasper-2.0.10.tar.gz
+cd jasper-2.0.10/
+cmake -G "Unix Makefiles" -H/home/byy/Build_COAWST/src/jasper-2.0.10 -B//home/byy/Build_COAWST/src/jasper-2.0.10-build -DCMAKE_INSTALL_PREFIX=/home/byy/Build_COAWST/LIBRARIES/jasper
+cd ../jasper-2.0.10-build/
+make install
+! in .bashrc
+### jasper
+export PATH=/home/byy/Build_COAWST/LIBRARIES/jasper/bin:$PATH
+export LD_LIBRARY_PATH=/home/byy/Build_COAWST/LIBRARIES/jasper/lib64:$LD_LIBRARY_PATH
+
+
+COAWST-MCT LIB
+cd Lib/MCT
+MPIHEADER=-I/home/byy/Build_COAWST/LIBRARIES/mpich/include ./configure --prefix=/home/byy/Build_COAWST/LIBRARIES/MCT
+! modify the resulting Makefile.conf with -fallow-argument-mismatch
+make
+make install
+! in .bashrc
+### MCT
+export MCT_INCDIR=/home/byy/Build_COAWST/LIBRARIES/MCT/include/
+export MCT_LIBDIR=/home/byy/Build_COAWST/LIBRARIES/MCT/lib/
+
+
+
+
+
