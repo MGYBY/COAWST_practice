@@ -151,6 +151,20 @@ export MCT_INCDIR=/home/byy/Build_COAWST/LIBRARIES/MCT/include/
 export MCT_LIBDIR=/home/byy/Build_COAWST/LIBRARIES/MCT/lib/
 
 
+COAWST
+cd ../..
+! mod build_coawst.sh
+! mod Linux-gfortran.mk Line 160:
+```
+FFLAGS += -I$(MY_ROOT_DIR)/SWAN/build/mod -fconvert=big-endian
+```
+! "Sandy" case
+./build_coawst.sh -j 8
+ln -sf Projects/Sandy/namelist.input .
+ln -sf Projects/Sandy/wrf* .
+cp Projects/Sandy/coupling_sandy.in Projects/Sandy/coupling_sandy.in.old
+cp Projects/Sandy/ocean_sandy.in Projects/Sandy/ocean_sandy.in.old
+mpirun -np 3 ./coawstM Projects/Sandy/coupling_sandy.in
 
 
 
