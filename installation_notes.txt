@@ -1,6 +1,8 @@
 sudo yum install gcc
 sudo yum install cpp gcc-c++
 sudo yum install unzip bzip2 time  perl tcsh wget m4 nfs-utils mlocate libX11-devel.x86_64 libXext-devel.x86_64 libXrender-devel.x86_64 fontconfig-devel.x86_64 curl-devel cmake subversion
+! for ubuntu
+sudo apt install build-essential unzip bzip2 time  perl tcsh wget m4 libnfs-utils libx11-dev mlocate libxext-dev libxrender-dev fontconfig curl cmake subversion
 
 export DIR=/home/byy/Build_COAWST/LIBRARIES
 mkdir -p $DIR
