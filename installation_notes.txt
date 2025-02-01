@@ -28,6 +28,7 @@ export LD_LIBRARY_PATH=/home/byy//Build_COAWST/LIBRARIES/zlib/lib:$LD_LIBRARY_PA
 HDF5
 wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.5/src/hdf5-1.10.5.tar.gz
 cd hdf5-............
+! --enable-parallel flag?
 ./configure --prefix=$DIR/hdf5 --with-zlib=$DIR/zlib --enable-fortran
 make -j2
 make install
