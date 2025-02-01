@@ -168,4 +168,8 @@ cp Projects/Sandy/ocean_sandy.in Projects/Sandy/ocean_sandy.in.old
 mpirun -np 3 ./coawstM Projects/Sandy/coupling_sandy.in
 
 
-
+WPS
+./clean
+./configure --build-grib2-libs
+./compile
+ls *.exe
